@@ -1,5 +1,5 @@
 <?php
-
+namespace Fleximenu;
 
 class Link {
 	

@@ -1,8 +1,8 @@
 <?php
 
-require_once('../autoload.php');
+require_once('../vendor/autoload.php');
 
-$menu = new Menu;
+$menu = new Fleximenu\Menu;
 
 $about = $menu->add('About', 'about',10);
 
