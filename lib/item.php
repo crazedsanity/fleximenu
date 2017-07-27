@@ -74,7 +74,7 @@ class Item {
 	 * @param  string|array  $options
 	 * @return void
 	 */
-	public function add($title, $options)
+	public function add($title, $options, $priority = NULL)
 	{
 		if( !is_array($options) ) {
 			$options = array('url' => $options);
@@ -82,7 +82,7 @@ class Item {
 		
 		$options['pid'] = $this->id;
 				
-		return $this->manager->add( $title, $options );
+		return $this->manager->add( $title, $options, $priority );
 	}
 
 	/**

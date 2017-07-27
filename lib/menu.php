@@ -23,7 +23,7 @@ class Menu {
 	 * @param  array|string  $options
 	 * @return Item
 	 */
-	public function add($title, $options)
+	public function add($title, $options, $priority = NULL)
 	{
 		$url  = $this->getUrl($options);
 		
@@ -37,8 +37,17 @@ class Menu {
 		$item = new Item($this, $title, $url, $attr, $pid);
 		
 		// Add the item to the menu array
-		array_push($this->menu, $item);
+		//array_push($this->menu, $item);
+
+		if (is_null($priority)) {
+			$priority = max(array_keys($this->menu)) ?: 0;
+			$priority += 10;
+		} 
+
+		$this->menu[$pid.'00'.$priority] = $item;
 		
+		ksort($this->menu);
+
 		// return the object just created
 		return $item;
 	}
@@ -102,6 +111,10 @@ class Menu {
 		$items = '';
 		
 		$element = ( in_array($type, ['ul', 'ol']) ) ? 'li' : $type;
+
+
+		//print_r($this->menu);
+		//die();
 		
 		foreach ($this->whereParent($pid) as $item)
 		{

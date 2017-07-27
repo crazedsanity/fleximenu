@@ -4,7 +4,7 @@ require_once('../autoload.php');
 
 $menu = new Menu;
 
-$about = $menu->add('About', 'about');
+$about = $menu->add('About', 'about',10);
 
 // since this item has sub items we append a caret icon to the hyperlink text
 $about->link->append(' <span class="caret"></span>');
@@ -14,12 +14,12 @@ $about->link->attributes(['class' => 'link-item', 'target' => '_blank']);
 
 $about->attributes('data-model', 'nice');
 
-$t = $about->add('Who we are?', array('url' => 'who-we-are',  'class' => 'navbar-item whoweare'));
-$about->add('What we do?', array('url' => 'what-we-do',  'class' => 'navbar-item whatwedo'));
+$t = $about->add('Who we are?', array('url' => 'who-we-are',  'class' => 'navbar-item whoweare'),20);
+$about->add('What we do?', array('url' => 'what-we-do',  'class' => 'navbar-item whatwedo'),10);
 
 
-$menu->add('Portfolio', 'portfolio');
-$menu->add('Contact',   'contact');
+$menu->add('Portfolio', 'portfolio',20);
+$menu->add('Contact',   'contact',9);
 
 // we're only going to hide items with `display` set to **false**
 
