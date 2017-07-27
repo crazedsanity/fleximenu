@@ -9,15 +9,15 @@ class Menu {
 	* @var array
 	*/
 	protected $menu = array();
-	
+
 	/**
 	 * Reserved keys
 	 *
 	 * @var array
 	 */
 	protected $reserved = array('pid', 'url');
-	
-	
+
+
 	/**
 	 * Create a new menu item
 	 *
@@ -28,29 +28,40 @@ class Menu {
 	public function add($title, $options, $priority = NULL)
 	{
 		$url  = $this->getUrl($options);
-		
-		// if $data contains 'pid' we  set the given pid 
+
+		// if $data contains 'pid' we  set the given pid
 		$pid  = ( isset($options['pid']) ) ? $options['pid'] : null;
-		
+
 		// we seprate html attributes from reserved keys
 		$attr = ( is_array($options) ) ? $this->extractAttr($options) : array();
-		
+
 		// making an instance of Item class
 		$item = new Item($this, $title, $url, $attr, $pid);
-		
+
 		// Add the item to the menu array
 		//array_push($this->menu, $item);
 
 		if (is_null($priority)) {
 			$priority = max(array_keys($this->menu)) ?: 0;
 			$priority += 10;
-		} 
+		}
 
 		$this->menu[$pid.'00'.$priority] = $item;
-		
+
 		ksort($this->menu);
 
 		// return the object just created
+		return $item;
+	}
+
+	public function getById($id)
+	{
+		$item = array_filter($this->menu, function($item) use ($id) {
+			return $item->attributes('id') == $id;
+		});
+
+		$item = end($item);
+
 		return $item;
 	}
 
@@ -60,7 +71,7 @@ class Menu {
 	 *
 	 * @return array
 	 */
-	public function roots() 
+	public function roots()
 	{
 		return $this->whereParent();
 	}
@@ -74,12 +85,12 @@ class Menu {
 	public function whereParent($parent = null)
 	{
 		return array_filter($this->menu, function($item) use ($parent){
-			
+
 			if( $item->get_pid() == $parent ) {
-				
+
 				return true;
 			}
-			
+
 			return false;
 		});
 	}
@@ -93,7 +104,7 @@ class Menu {
 	public function filter($callback)
 	{
 		if( is_callable($callback) ) {
-			
+
 			$this->menu = array_filter($this->menu, $callback);
 
 		}
@@ -111,33 +122,33 @@ class Menu {
 	public function render($type = 'ul', $pid = null)
 	{
 		$items = '';
-		
+
 		$element = ( in_array($type, ['ul', 'ol']) ) ? 'li' : $type;
 
 
 		//print_r($this->menu);
 		//die();
-		
+
 		foreach ($this->whereParent($pid) as $item)
 		{
-			$items .= "\n<{$element}{$this->parseAttr($item->attributes())}>";                  
+			$items .= "\n<{$element}{$this->parseAttr($item->attributes())}>";
 
 			$items .= "<a href=\"{$item->link->url}\"{$this->parseAttr($item->link->attributes)}>{$item->link->text}</a>";
 
 			if( $item->hasChildren() ) {
-				
+
 				$items .= "<{$type}>";
-				
+
 				$items .= $this->render($type, $item->get_id());
-				
+
 				$items .= "</{$type}>";
 			}
-			
+
 			$items .= "</{$element}>";
 		}
 
 		return $items;
-	}	
+	}
 
 	/**
 	 * Return url
@@ -149,11 +160,11 @@ class Menu {
 	{
 		if( ! is_array($options) ) {
 			return $options;
-		} 
+		}
 
 		elseif ( isset($options['url']) ) {
 			return $options['url'];
-		} 
+		}
 
 		return null;
 	}
@@ -181,13 +192,13 @@ class Menu {
 	    {
 	        if (is_numeric($key)) {
 	        	$key = $value;
-	        }	
+	        }
 
 		    $element = (!is_null($value)) ? $key . '="' . $value . '"' : null;
-	    
+
 	        if (!is_null($element)) $html[] = $element;
 	    }
-	    
+
 	    return count($html) > 0 ? ' ' . implode(' ', $html) : '';
 	}
 
@@ -197,7 +208,7 @@ class Menu {
 	 *
 	 * @return int
 	 */
-	public function length() 
+	public function length()
 	{
 		return count($this->menu);
 	}
