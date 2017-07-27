@@ -10,7 +10,7 @@ A flexible menu builder in PHP
 ```php
 <?php
 
-$menu = new Menu;
+$menu = new Fleximenu\Menu;
 
 $menu->add('Home', '');
 
