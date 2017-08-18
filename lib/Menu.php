@@ -137,7 +137,7 @@ class Menu {
 
 			if( $item->hasChildren() ) {
 
-				$items .= "<{$type}>";
+				$items .= "<{$type} class='dropdown-menu'>";
 
 				$items .= $this->render($type, $item->get_id());
 
