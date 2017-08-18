@@ -1,6 +1,6 @@
 {
-    "name": "lavary/fleximenu",
-    "description": "A flexible menu buidler in PHP",
+    "name": "crazedsanity/fleximenu",
+    "description": "A flexible menu buidler in PHP (originally lavary/fleximenu)",
 	"license": "MIT",
     "authors": [
         {
